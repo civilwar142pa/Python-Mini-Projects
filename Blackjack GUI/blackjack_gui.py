@@ -23,18 +23,42 @@ class myTitleFrame(ctk.CTkFrame):
 class myPlayerFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.grid_rowconfigure(0, weight=1)
+        
+        # main player frame
+        self.grid_rowconfigure(0, weight=3)
+        self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        self.label = ctk.CTkLabel(self, text="Player Frame")
-        self.label.grid(row=0, column=0, padx=20, pady=20)
+        
+        #card subframe
+        self.card_container = ctk.CTkFrame(self, fg_color="transparent")
+        self.card_container.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+        
+        #score subframe
+        self.score_container = ctk.CTkFrame(self, fg_color="transparent")
+        self.score_container.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+        
+        #labels
+        self.score_label = ctk.CTkLabel(self.score_container, text="Player Score: 0")
+        self.score_label.pack(expand=True)
         
 class myDealerFrame(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
-        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=3)
+        self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        self.label = ctk.CTkLabel(self, text="Dealer Frame")
-        self.label.grid(row=0, column=0, padx=20, pady=20)
+        
+        #card subframe
+        self.card_container = ctk.CTkFrame(self, fg_color="transparent")
+        self.card_container.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
+        
+        #score subframe
+        self.score_container = ctk.CTkFrame(self, fg_color="transparent")
+        self.score_container.grid(row=1, column=0, padx=5, pady=5, sticky="ew")
+        
+        #labels
+        self.score_label = ctk.CTkLabel(self.score_container, text="Dealer Score: 0")
+        self.score_label.pack(expand=True)
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 
@@ -45,7 +69,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("BlackJack w/ GUI")
-        self.geometry("600x400")
+        self.geometry("600x500")
         ctk.set_appearance_mode("system")
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
@@ -82,6 +106,10 @@ class App(ctk.CTk):
         self.scores()
         self.main_display()
         self.compare()
+        self.myPlayerFrame.score_label.configure(text=f"Player Score: {self.pscore}")
+        self.myDealerFrame.score_label.configure(text=f"Dealer Score: {self.dscore}")
+        self.myPlayerFrame.card_container.configure(text=f"Player Cards: {self.pcards}")
+        self.myDealerFrame.card_container.configure(text=f"Dealer Cards: {self.dcards[0]} and ?")
 
     def initial_cards(self):
         """randomizes two cards from the deck for player and dealer"""
